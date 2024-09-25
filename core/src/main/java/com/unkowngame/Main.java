@@ -14,7 +14,7 @@ public class Main extends ApplicationAdapter {
 
     }
 
-    @Override
+    @Override //велики код
     public void dispose() {
 
     }
