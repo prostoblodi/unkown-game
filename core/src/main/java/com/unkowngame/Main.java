@@ -3,17 +3,25 @@ package com.unkowngame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 
 public class Main extends ApplicationAdapter {
 
-    ShapeRenderer shapeRenderer; //класс(переменная) для создания банальных фигур
+    ShapeRenderer shapeRenderer; // класс(переменная) для создания банальных фигур
+    OrthographicCamera camera; // камера
+
     int x, y; // координаты квадрата
 
     @Override
     public void create() {
         shapeRenderer = new ShapeRenderer(); //создание рендера базовых фигур
+
+        // Инициализируем камеру
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.set(x, y, 0);  // Устанавливаем позицию камеры на начальное положение квадрата
+        camera.update();
 
         //присвоение базовых координат
         x = 100;
@@ -28,11 +36,22 @@ public class Main extends ApplicationAdapter {
 
         controls(); // проверка нажата ли клавиша управления
 
+        // Обновляем позицию камеры, чтобы она следовала за квадратом
+        camera.position.set(x, y, 0);
+        camera.update();
+
+        // Применяем камеру для рендера
+        shapeRenderer.setProjectionMatrix(camera.combined);
+
         // Начинаем отрисовку
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);  // Используем заполненный тип для заливки квадрата
 
         // Рисуем квадрат (x, y - координаты, ширина, высота)
+        shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.rect(x, y, 50, 50);
+
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.rect(200, 200, 50, 50);
 
         // Заканчиваем отрисовку
         shapeRenderer.end();
