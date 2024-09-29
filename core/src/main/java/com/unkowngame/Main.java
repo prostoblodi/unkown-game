@@ -2,7 +2,7 @@ package com.unkowngame;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,6 +13,8 @@ public class Main extends ApplicationAdapter {
     OrthographicCamera camera; // камера
 
     int x, y; // координаты квадрата
+
+    Player player = new Player();
 
     @Override
     public void create() {
@@ -26,6 +28,8 @@ public class Main extends ApplicationAdapter {
         //присвоение базовых координат
         x = 100;
         y = 100;
+
+        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair); // курсор другой
     }
 
     @Override
@@ -34,21 +38,11 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        controls(); // проверка нажата ли клавиша управления
-
-        // Обновляем позицию камеры, чтобы она следовала за квадратом
-        camera.position.set(x, y, 0);
-        camera.update();
-
-        // Применяем камеру для рендера
-        shapeRenderer.setProjectionMatrix(camera.combined);
-
         // Начинаем отрисовку
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);  // Используем заполненный тип для заливки квадрата
 
-        // Рисуем квадрат (x, y - координаты, ширина, высота)
-        shapeRenderer.setColor(1, 1, 1, 1);
-        shapeRenderer.rect(x, y, 50, 50);
+        player.update();
+        player.draw(camera, shapeRenderer);
 
         shapeRenderer.setColor(1, 0, 0, 1);
         shapeRenderer.rect(200, 200, 50, 50);
@@ -62,44 +56,5 @@ public class Main extends ApplicationAdapter {
         shapeRenderer.dispose();
     }
 
-    public void controls(){ // управление
-        float deltaTime = Gdx.graphics.getDeltaTime();
 
-        // Проверяем нажатие W и D для движения по диагонали вверх-вправо
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-            y ++;
-            x ++;
-        }
-        // Проверяем нажатие W и A для движения по диагонали вверх-влево
-        else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-            y ++;
-            x --;
-        }
-        // Проверяем нажатие S и D для движения по диагонали вниз-вправо
-        else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-            y --;
-            x ++;
-        }
-        // Проверяем нажатие S и A для движения по диагонали вниз-влево
-        else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-            y --;
-            x --;
-        }
-        // Движение строго вверх (W)
-        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            y ++;
-        }
-        // Движение строго вниз (S)
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            y --;
-        }
-        // Движение строго влево (A)
-        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            x --;
-        }
-        // Движение строго вправо (D)
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            x ++;
-        }
-    }
 }
