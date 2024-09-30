@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 
+import java.util.ArrayList;
+
 public class Main extends ApplicationAdapter {
 
     ShapeRenderer shapeRenderer; // класс(переменная) для создания банальных фигур
@@ -16,6 +18,7 @@ public class Main extends ApplicationAdapter {
 
     Player player = new Player(); // добавление игрока
     Enemy enemy = new Enemy(); // Добавление врага
+    static ArrayList<Bullet> bullets;
 
     @Override
     public void create() { // класс, который срабатывает при старте игры только один раз
@@ -41,6 +44,12 @@ public class Main extends ApplicationAdapter {
 
         player.update(); // обновление игрока
 
+        if (bullets != null) {
+            for (Bullet bullet : bullets) { // обновление всех пуль
+                bullet.update(enemy.hitbox);
+            }
+        }
+
         // Начинаем отрисовку
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);  // Используем заполненный тип для заливки квадрата
 
@@ -49,6 +58,10 @@ public class Main extends ApplicationAdapter {
 
         shapeRenderer.end();
         // Заканчиваем отрисовку
+    }
+
+    public static void createBullet(float speedX, float speedY){
+        bullets.add(new Bullet(speedX, speedY));
     }
 
     @Override // хз, лучше не трогать
