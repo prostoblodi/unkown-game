@@ -47,9 +47,11 @@ public class Main extends ApplicationAdapter {
         if (!bullets.isEmpty()) {
             for (Bullet bullet : new ArrayList<>(bullets)) { // обновление всех пуль
                 bullet.update(enemy.hitbox, shapeRenderer);
+                System.out.println("-> Bullet updated");
                 if(!bullet.isActive()){
                     // bullet.dispose(); метод не сделан ещё
                     bullets.remove(bullet);
+                    System.out.println("-> removed kaboom((");
                 }
             }
         }
@@ -66,6 +68,7 @@ public class Main extends ApplicationAdapter {
 
     public static void createBullet(float speedX, float speedY, float startX, float startY){
         bullets.add(new Bullet(speedX, speedY, startX, startY));
+        System.out.printf("-> I want kaboom sppedX: %f speedY: %f startX: %f startY: %f \n", speedX, speedY, startX, startY);
     }
 
     @Override // хз, лучше не трогать

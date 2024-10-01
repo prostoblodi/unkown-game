@@ -8,7 +8,7 @@ public class Bullet {
     float speedX, speedY; // скорость пули
     float x, y; // координаты пули
 
-    boolean isActive; // активна ли пуля
+    boolean isActive = true; // активна ли пуля
 
     Rectangle hitbox = new Rectangle(x,y,25,25);
 
@@ -31,6 +31,7 @@ public class Bullet {
 
         if(hitbox.overlaps(enemyHitbox)){
             isActive = false;
+            System.out.println("-> KABOOM!, entity");
         }
 
     } // обновление пули
@@ -45,6 +46,7 @@ public class Bullet {
     }
 
     public boolean isActive() {
+        System.out.println("-> KABOOM!, prikol");
         return isActive;
     } // активна ли пуля
 
