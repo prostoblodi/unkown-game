@@ -18,7 +18,7 @@ public class Main extends ApplicationAdapter {
 
     Player player = new Player(); // добавление игрока
     Enemy enemy = new Enemy(); // Добавление врага
-    static ArrayList<Bullet> bullets;
+    static ArrayList<Bullet> bullets = new ArrayList<>();
 
     @Override
     public void create() { // класс, который срабатывает при старте игры только один раз
@@ -44,8 +44,8 @@ public class Main extends ApplicationAdapter {
 
         player.update(); // обновление игрока
 
-        if (bullets != null) {
-            for (Bullet bullet : bullets) { // обновление всех пуль
+        if (!bullets.isEmpty()) {
+            for (Bullet bullet : new ArrayList<>(bullets)) { // обновление всех пуль
                 bullet.update(enemy.hitbox, shapeRenderer);
                 if(!bullet.isActive()){
                     // bullet.dispose(); метод не сделан ещё

@@ -36,8 +36,12 @@ public class Bullet {
     } // обновление пули
 
     public void draw(ShapeRenderer shaperenderer){
+        shaperenderer.begin(ShapeRenderer.ShapeType.Filled);
+
         shaperenderer.setColor(0, 1, 0, 1);
         shaperenderer.rect(x, y, 25, 25);
+
+        shaperenderer.end();
     }
 
     public boolean isActive() {
