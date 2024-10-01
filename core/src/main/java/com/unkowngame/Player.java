@@ -98,6 +98,6 @@ public class Player {
         float speedX = deltaX / distance * speed;
         float speedY = deltaY / distance * speed;
 
-        Main.createBullet(speedX, speedY);
+        Main.createBullet(speedX, speedY, playerX, playerY);
     } // выстрел
 }

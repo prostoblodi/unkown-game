@@ -46,7 +46,11 @@ public class Main extends ApplicationAdapter {
 
         if (bullets != null) {
             for (Bullet bullet : bullets) { // обновление всех пуль
-                bullet.update(enemy.hitbox);
+                bullet.update(enemy.hitbox, shapeRenderer);
+                if(!bullet.isActive()){
+                    // bullet.dispose(); метод не сделан ещё
+                    bullets.remove(bullet);
+                }
             }
         }
 
@@ -60,8 +64,8 @@ public class Main extends ApplicationAdapter {
         // Заканчиваем отрисовку
     }
 
-    public static void createBullet(float speedX, float speedY){
-        bullets.add(new Bullet(speedX, speedY));
+    public static void createBullet(float speedX, float speedY, float startX, float startY){
+        bullets.add(new Bullet(speedX, speedY, startX, startY));
     }
 
     @Override // хз, лучше не трогать
