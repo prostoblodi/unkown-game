@@ -17,7 +17,7 @@ public class Main extends ApplicationAdapter {
     int x, y; // координаты квадрата
 
     Player player = new Player(); // добавление игрока
-    Enemy enemy = new Enemy(); // Добавление врага
+
     static ArrayList<Bullet> bullets = new ArrayList<>();
 
     @Override
@@ -42,33 +42,37 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1); // цвет, которым будет очищатся экран
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // очистка экрана
 
-        player.update(); // обновление игрока
+        player.update(camera); // обновление игрока
 
+        bulletAndEnemyUpdate();
+
+        // Начинаем отрисовку
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);  // Используем заполненный тип для заливки квадрата
+        player.draw(camera, shapeRenderer); // отрисовка игрока
+        shapeRenderer.end();
+        // Заканчиваем отрисовку
+    }
+
+    public void bulletAndEnemyUpdate(){
         if (!bullets.isEmpty()) {
             for (Bullet bullet : new ArrayList<>(bullets)) { // обновление всех пуль
-                bullet.update(enemy.hitbox, shapeRenderer);
-                System.out.println("-> Bullet updated");
+
+                bullet.update(shapeRenderer);
+
                 if(!bullet.isActive()){
-                    // bullet.dispose(); метод не сделан ещё
                     bullets.remove(bullet);
                     System.out.println("-> removed kaboom((");
                 }
             }
         }
-
-        // Начинаем отрисовку
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);  // Используем заполненный тип для заливки квадрата
-
-        player.draw(camera, shapeRenderer); // отрисовка игрока
-        enemy.draw(shapeRenderer); // отрисовка врага
-
-        shapeRenderer.end();
-        // Заканчиваем отрисовку
     }
 
     public static void createBullet(float speedX, float speedY, float startX, float startY){
         bullets.add(new Bullet(speedX, speedY, startX, startY));
-        System.out.printf("-> I want kaboom sppedX: %f speedY: %f startX: %f startY: %f \n", speedX, speedY, startX, startY);
+    }
+
+    public void createEnemies(){
+
     }
 
     @Override // хз, лучше не трогать

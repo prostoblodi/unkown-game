@@ -5,14 +5,18 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Enemy {
 
-    Rectangle hitbox = new Rectangle(200, 200, 50, 50); // создание хитбокса
+    float x, y;
+    Rectangle hitbox = new Rectangle(x, y, 50, 50); // создание хитбокса
+
+    public Enemy(float x, float y){
+        this.x = x;
+        this.y = y;
+    }
 
     public void draw(ShapeRenderer shapeRenderer){
-
         shapeRenderer.setColor(1, 0, 0, 1);
-        shapeRenderer.rect(200, 200, 50, 50);
+        shapeRenderer.rect(x, y, 50, 50);
     } // отрисовка врага
-
     public Rectangle getHitbox() {
         return hitbox;
     } // возвращает хитбокс

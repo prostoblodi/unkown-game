@@ -1,5 +1,6 @@
 package com.unkowngame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -7,6 +8,8 @@ public class Bullet {
 
     float speedX, speedY; // скорость пули
     float x, y; // координаты пули
+    float windowWidth = Gdx.graphics.getWidth();
+    float windowHeight = Gdx.graphics.getHeight();
 
     boolean isActive = true; // активна ли пуля
 
@@ -23,15 +26,18 @@ public class Bullet {
 
     } // класс конструктор
 
-    public void update(Rectangle enemyHitbox, ShapeRenderer shaperenderer){
+    public void update(ShapeRenderer shaperenderer){
         x += speedX;
         y += speedY;
 
+        hitbox.x = x;
+        hitbox.y = y;
+
         draw(shaperenderer);
 
-        if(hitbox.overlaps(enemyHitbox)){
+        if (x < -windowWidth || x > windowWidth || y < -windowHeight || y > windowHeight) {
             isActive = false;
-            System.out.println("-> KABOOM!, entity");
+            System.out.println("KABOOM IS BAD!");
         }
 
     } // обновление пули
@@ -46,8 +52,10 @@ public class Bullet {
     }
 
     public boolean isActive() {
-        System.out.println("-> KABOOM!, prikol");
         return isActive;
     } // активна ли пуля
 
+    public Rectangle getHitbox() {
+        return hitbox;
+    }
 }

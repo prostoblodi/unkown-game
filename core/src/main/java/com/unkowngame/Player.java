@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class Player {
 
@@ -25,8 +26,8 @@ public class Player {
         shapeRenderer.rect(x, y, 50, 50);
     } // отрисковка
 
-    public void update(){
-        controls();
+    public void update(OrthographicCamera camera){
+        controls(camera);
         hitbox.x = x;
         hitbox.y = y;
     } // обновление всех вычислений
@@ -38,7 +39,7 @@ public class Player {
         return y;
     } // узнать y игрока
 
-    public void controls(){
+    public void controls(OrthographicCamera camera){
 
         // Проверяем нажатие W и D для движения по диагонали вверх-вправо
         if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -78,26 +79,35 @@ public class Player {
         }
         // Нажата ли ЛКМ
         else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-           shot();
+           shot(camera);
         }
     } // управление
-    public void shot(){
-        int targetX = Gdx.input.getX();
-        int targetY = Gdx.input.getY();
+    public void shot(OrthographicCamera camera) {
+        // Получаем координаты курсора в мировых координатах
+        Vector3 target = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(target);  // Преобразование в мировые координаты
 
+        // Координаты игрока
         int playerX = getX();
         int playerY = getY();
 
-        int deltaX = targetX - playerX;
-        int deltaY = targetY - playerY;
+        // Вычисляем разницу между курсором и игроком
+        int deltaX = (int) (target.x - playerX);
+        int deltaY = (int) (target.y - playerY);
 
+        // Рассчитываем дистанцию
         float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        int speed = 200; // Bullet speed
+        // Скорость пули
+        int speed = 1; // Можно увеличить для скорости
 
+        // Вычисляем компоненты скорости
         float speedX = deltaX / distance * speed;
         float speedY = deltaY / distance * speed;
 
+        // Создаём пулю с вычисленной скоростью
         Main.createBullet(speedX, speedY, playerX, playerY);
-    } // выстрел
+
+        System.out.printf("|-> I want target kaboom: \n L targetX: %f, targetY: %f, playerX: %d, playerY: %d, distance: %f \n", target.x, target.y, playerX, playerY, distance);
+    }// выстрел
 }
