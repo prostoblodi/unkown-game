@@ -30,8 +30,8 @@ public class Main extends ApplicationAdapter {
         camera.update();
 
         //присвоение базовых координат
-        x = 100;
-        y = 100;
+        x = 0;
+        y = 0;
 
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair); // курсор другой
     }
@@ -57,7 +57,7 @@ public class Main extends ApplicationAdapter {
         if (!bullets.isEmpty()) {
             for (Bullet bullet : new ArrayList<>(bullets)) { // обновление всех пуль
 
-                bullet.update(shapeRenderer);
+                bullet.update(shapeRenderer, player);
 
                 if(!bullet.isActive()){
                     bullets.remove(bullet);

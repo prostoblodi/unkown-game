@@ -39,49 +39,35 @@ public class Player {
         return y;
     } // узнать y игрока
 
-    public void controls(OrthographicCamera camera){
+    public void controls(OrthographicCamera camera) {
+        // Reset movement delta
+        int deltaX = 0;
+        int deltaY = 0;
 
-        // Проверяем нажатие W и D для движения по диагонали вверх-вправо
-        if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-            y ++;
-            x ++;
+        // Check for movement keys
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            deltaY++;
         }
-        // Проверяем нажатие W и A для движения по диагонали вверх-влево
-        else if (Gdx.input.isKeyPressed(Input.Keys.W) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-            y ++;
-            x --;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            deltaY--;
         }
-        // Проверяем нажатие S и D для движения по диагонали вниз-вправо
-        else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.D)) {
-            y --;
-            x ++;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            deltaX--;
         }
-        // Проверяем нажатие S и A для движения по диагонали вниз-влево
-        else if (Gdx.input.isKeyPressed(Input.Keys.S) && Gdx.input.isKeyPressed(Input.Keys.A)) {
-            y --;
-            x --;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            deltaX++;
         }
-        // Движение строго вверх (W)
-        else if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            y ++;
+
+        // Update position
+        x += deltaX;
+        y += deltaY;
+
+        // Check for left mouse button click
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            shot(camera);
         }
-        // Движение строго вниз (S)
-        else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            y --;
-        }
-        // Движение строго влево (A)
-        else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            x --;
-        }
-        // Движение строго вправо (D)
-        else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            x ++;
-        }
-        // Нажата ли ЛКМ
-        else if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-           shot(camera);
-        }
-    } // управление
+    } // контроль
+
     public void shot(OrthographicCamera camera) {
         // Получаем координаты курсора в мировых координатах
         Vector3 target = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);

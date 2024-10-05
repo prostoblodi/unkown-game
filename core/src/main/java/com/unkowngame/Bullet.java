@@ -26,7 +26,7 @@ public class Bullet {
 
     } // класс конструктор
 
-    public void update(ShapeRenderer shaperenderer){
+    public void update(ShapeRenderer shaperenderer, Player player){
         x += speedX;
         y += speedY;
 
