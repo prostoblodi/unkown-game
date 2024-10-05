@@ -35,7 +35,7 @@ public class Bullet {
 
         draw(shaperenderer);
 
-        if (x < -windowWidth || x > windowWidth || y < -windowHeight || y > windowHeight) {
+        if (x < -windowWidth - 1000 || x > windowWidth + 1000|| y < -windowHeight - 1000|| y > windowHeight + 1000) { // условие фиксить нада
             isActive = false;
         }
 
