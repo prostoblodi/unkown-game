@@ -37,7 +37,6 @@ public class Bullet {
 
         if (x < -windowWidth || x > windowWidth || y < -windowHeight || y > windowHeight) {
             isActive = false;
-            System.out.println("KABOOM IS BAD!");
         }
 
     } // обновление пули
@@ -49,13 +48,5 @@ public class Bullet {
         shaperenderer.rect(x, y, 25, 25);
 
         shaperenderer.end();
-    }
-
-    public boolean isActive() {
-        return isActive;
-    } // активна ли пуля
-
-    public Rectangle getHitbox() {
-        return hitbox;
     }
 }

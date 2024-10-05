@@ -8,17 +8,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main extends ApplicationAdapter {
 
     ShapeRenderer shapeRenderer; // класс(переменная) для создания банальных фигур
     OrthographicCamera camera; // камера
+    Random random = new Random();
 
     int x, y; // координаты квадрата
+
+    float randomX, randomY;
 
     Player player = new Player(); // добавление игрока
 
     static ArrayList<Bullet> bullets = new ArrayList<>();
+    ArrayList<Enemy> enemies = new ArrayList<>();
 
     @Override
     public void create() { // класс, который срабатывает при старте игры только один раз
@@ -34,6 +39,7 @@ public class Main extends ApplicationAdapter {
         y = 0;
 
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair); // курсор другой
+        createEnemies();
     }
 
     @Override
@@ -59,11 +65,32 @@ public class Main extends ApplicationAdapter {
 
                 bullet.update(shapeRenderer, player);
 
-                if(!bullet.isActive()){
+                for(Enemy enemy : new ArrayList<>(enemies)) {
+                    if(enemy.hitbox.overlaps(bullet.hitbox) && enemy.isActive && bullet.isActive){
+                        bullet.isActive = false;
+                        enemy.isActive = false;
+                        System.out.println("Enemy " + enemy + " killed by bullet " + bullet);
+                    }
+                    if(!bullet.isActive){
+                        bullets.remove(bullet);
+                        System.out.println("-> Removed bullet " + bullet);
+                    }
+                }
+
+                if(!bullet.isActive){
                     bullets.remove(bullet);
-                    System.out.println("-> removed kaboom((");
+                    System.out.println("-> Removed bullet " + bullet);
                 }
             }
+        }
+        for(Enemy enemy : new ArrayList<>(enemies)) {
+
+            if(!enemy.isActive){
+                enemies.remove(enemy);
+                System.out.println("-> Removed enemy " + enemy);
+            }
+
+            enemy.draw(shapeRenderer);
         }
     }
 
@@ -72,7 +99,13 @@ public class Main extends ApplicationAdapter {
     }
 
     public void createEnemies(){
+        for(int i = 0; i<10; i++){
+            randomX = random.nextInt(-200, 200);
+            randomY = random.nextInt(-200, 200);
 
+            enemies.add(new Enemy(randomX, randomY));
+            System.out.printf("-> New enemy! x: %f y: %f \n", randomX, randomY);
+        }
     }
 
     @Override // хз, лучше не трогать

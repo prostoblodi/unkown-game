@@ -85,7 +85,7 @@ public class Player {
         float distance = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
         // Скорость пули
-        int speed = 1; // Можно увеличить для скорости
+        int speed = 12; // Можно увеличить для скорости
 
         // Вычисляем компоненты скорости
         float speedX = deltaX / distance * speed;
