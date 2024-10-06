@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,9 +16,9 @@ public class Main extends ApplicationAdapter {
     ShapeRenderer shapeRenderer; // класс(переменная) для создания банальных фигур
     OrthographicCamera camera; // камера
     Random random = new Random();
+    Rectangle spawnRadius = new Rectangle(0,0,200,200);
 
     int x, y; // координаты квадрата
-
     float randomX, randomY;
 
     Player player = new Player(); // добавление игрока
@@ -69,17 +70,17 @@ public class Main extends ApplicationAdapter {
                     if(enemy.hitbox.overlaps(bullet.hitbox) && enemy.isActive && bullet.isActive){
                         bullet.isActive = false;
                         enemy.isActive = false;
-                        System.out.println("Enemy " + enemy + " killed by bullet " + bullet);
+                        System.out.println("^-> Enemy " + enemy + " killed by bullet " + bullet);
                     }
                     if(!bullet.isActive){
                         bullets.remove(bullet);
-                        System.out.println("-> Removed bullet " + bullet);
+                        System.out.println("!-> Removed bullet " + bullet);
                     }
                 }
 
                 if(!bullet.isActive){
                     bullets.remove(bullet);
-                    System.out.println("-> Removed bullet " + bullet);
+                    System.out.println("!-> Removed bullet " + bullet);
                 }
             }
         }
@@ -87,7 +88,7 @@ public class Main extends ApplicationAdapter {
 
             if(!enemy.isActive){
                 enemies.remove(enemy);
-                System.out.println("-> Removed enemy " + enemy);
+                System.out.println("!-> Removed enemy " + enemy);
             }
 
             enemy.draw(shapeRenderer);
@@ -100,11 +101,19 @@ public class Main extends ApplicationAdapter {
 
     public void createEnemies(){
         for(int i = 0; i<10; i++){
-            randomX = random.nextInt(-200, 200);
-            randomY = random.nextInt(-200, 200);
+            randomX = random.nextInt(-300, 300);
+            randomY = random.nextInt(-300, 300);
 
             enemies.add(new Enemy(randomX, randomY));
             System.out.printf("-> New enemy! x: %f y: %f \n", randomX, randomY);
+
+            for(Enemy enemy : new ArrayList<>(enemies)) {
+                if(enemy.hitbox.overlaps(spawnRadius)){
+                    System.out.println("!-> Oops! Enemy " + enemy + " is bad! Removing...");
+                    enemies.remove(enemy);
+                    i--;
+                }
+            }
         }
     }
 
