@@ -8,14 +8,14 @@ public class Bullet {
 
     float speedX, speedY; // скорость пули
     float x, y; // координаты пули
-    float windowWidth = Gdx.graphics.getWidth();
-    float windowHeight = Gdx.graphics.getHeight();
-    float leftBorder, bottomBorder;
-    float rightBorder, topBorder;
+    float windowWidth = Gdx.graphics.getWidth(); // ширина окна
+    float windowHeight = Gdx.graphics.getHeight(); // высота окна
+    float leftBorder, bottomBorder; // левая, нижняя границы
+    float rightBorder, topBorder; // правая, верхняя границы
 
     boolean isActive = true; // активна ли пуля
 
-    Rectangle hitbox = new Rectangle(x,y,25,25);
+    Rectangle hitbox = new Rectangle(x,y,25,25); // хитбокс
 
 
     public Bullet(float speedX, float speedY, float startX, float startY){ // класс, который вызывается при создании пули один раз(я надеюсь)
@@ -47,7 +47,7 @@ public class Bullet {
             isActive = false;
             System.out.printf("|-> Bullet removed! \n L x: %f, y: %f -- leftBorder: %f, bottomBorder: %f -- rightBorder: %f, topBorder: %f \n",
             x, y, leftBorder, bottomBorder, rightBorder, topBorder);
-        }
+        } // если пуля не там, где надо - удалить
 
 
     } // обновление пули

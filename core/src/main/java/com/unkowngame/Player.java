@@ -12,7 +12,7 @@ import java.util.Random;
 public class Player {
 
     int x, y; // координаты игрока
-    private float timeSinceLastShot = 0f;  // Timer to track reload
+    private float timeSinceLastShot = 0f;  // Таймер
 
     Rectangle hitbox = new Rectangle(x, y, 50, 50);
     Random random = new Random();
@@ -44,11 +44,11 @@ public class Player {
     } // узнать y игрока
 
     public void controls(OrthographicCamera camera, float deltaTime) {
-        // Reset movement delta
+        // обнуление переменных
         int deltaX = 0;
         int deltaY = 0;
 
-        // Check for movement keys
+        // Проверка на управление-
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             deltaY++;
         }
@@ -62,18 +62,17 @@ public class Player {
             deltaX++;
         }
 
-        // Update position
+        // обновление позиции
         x += deltaX;
         y += deltaY;
 
-        // Update time since last shot
-        // Time in seconds for reloading (adjust as needed)
+        // если арбалет не перезераяжен - перезаряжать
         float reloadTime = random.nextFloat(1.5F, 2);
         if (timeSinceLastShot < reloadTime) {
             timeSinceLastShot += deltaTime;
         }
 
-        // Check for left mouse button click and if weapon has reloaded
+        // Если ты хочешь выстрелить и арбалет перезаряжен
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timeSinceLastShot >= reloadTime) {
             shot(camera);  // Fire the shot
             timeSinceLastShot = 0;  // Reset the reload timer after shooting

@@ -63,55 +63,57 @@ public class Main extends ApplicationAdapter {
 
     public void bulletAndEnemyUpdate(){
         if (!bullets.isEmpty()) {
-            for (Bullet bullet : new ArrayList<>(bullets)) { // обновление всех пуль
+            for (Bullet bullet : new ArrayList<>(bullets)) {
 
-                bullet.update(shapeRenderer, player);
+                bullet.update(shapeRenderer, player); // обновление пули
 
                 for(Enemy enemy : new ArrayList<>(enemies)) {
                     if(enemy.hitbox.overlaps(bullet.hitbox) && enemy.isActive && bullet.isActive){
                         bullet.isActive = false;
                         enemy.isActive = false;
                         System.out.println("^-> Enemy " + enemy + " killed by bullet " + bullet);
-                    }
-                }
+                    } // Проврека на столкновение
+                } // перебор всех врагов
 
                 if(!bullet.isActive){
                     bullets.remove(bullet);
-                }
-            }
-        }
+                } // удаление пули, если неактивна
+            } // перебор всех пуль
+        } // если пули есть
         for(Enemy enemy : new ArrayList<>(enemies)) {
 
             if(!enemy.isActive){
                 enemies.remove(enemy);
-            }
+            } // если враг не активен - удаление
 
-            enemy.draw(shapeRenderer);
-        }
+            enemy.draw(shapeRenderer); // отрисовка
+        } // перебор врагов
     }
 
     public static void createBullet(float speedX, float speedY, float startX, float startY){
         bullets.add(new Bullet(speedX, speedY, startX, startY));
-    }
+    } // создание пули
 
     public void createEnemies(){
         for(int i = 0; i<10; i++){
             randomX = random.nextInt(-300, 300);
             randomY = random.nextInt(-300, 300);
+            // рандом координаты от -300 до 300
 
             enemies.add(new Enemy(randomX, randomY));
             System.out.printf("-> New enemy! x: %f y: %f \n", randomX, randomY);
+            // добавление врага
 
             for(Enemy enemy : new ArrayList<>(enemies)) {
                 if(enemy.hitbox.overlaps(spawnRadius)){
                     System.out.println("!-> Oops! Enemy " + enemy + " is bad! Removing...");
                     enemies.remove(enemy);
                     i--;
-                }
-            }
-        }
+                } // если враг заспавнился слишком близко к игроку - удаление, и повторение цикла на один раз больше
+            } // перебор всех врагов
+        } // повторить 10 раз
         System.out.println("------------------------------");
-    }
+    } // генерация врагов
 
     @Override // хз, лучше не трогать
     public void dispose() { // класс для оптимизации(нужно точнее - спрашивать у чат гпт)
