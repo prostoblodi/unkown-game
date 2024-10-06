@@ -45,11 +45,12 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() { // класс, который обновляется каждый кадр
+        float deltaTime = Gdx.graphics.getDeltaTime();
 
         Gdx.gl.glClearColor(0, 0, 0, 1); // цвет, которым будет очищатся экран
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // очистка экрана
 
-        player.update(camera); // обновление игрока
+        player.update(camera, deltaTime); // обновление игрока
 
         bulletAndEnemyUpdate();
 
@@ -72,15 +73,10 @@ public class Main extends ApplicationAdapter {
                         enemy.isActive = false;
                         System.out.println("^-> Enemy " + enemy + " killed by bullet " + bullet);
                     }
-                    if(!bullet.isActive){
-                        bullets.remove(bullet);
-                        System.out.println("!-> Removed bullet " + bullet);
-                    }
                 }
 
                 if(!bullet.isActive){
                     bullets.remove(bullet);
-                    System.out.println("!-> Removed bullet " + bullet);
                 }
             }
         }
@@ -88,7 +84,6 @@ public class Main extends ApplicationAdapter {
 
             if(!enemy.isActive){
                 enemies.remove(enemy);
-                System.out.println("!-> Removed enemy " + enemy);
             }
 
             enemy.draw(shapeRenderer);
@@ -115,6 +110,7 @@ public class Main extends ApplicationAdapter {
                 }
             }
         }
+        System.out.println("------------------------------");
     }
 
     @Override // хз, лучше не трогать

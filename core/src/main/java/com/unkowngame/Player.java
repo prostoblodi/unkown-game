@@ -7,11 +7,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.Random;
+
 public class Player {
 
     int x, y; // координаты игрока
+    private float timeSinceLastShot = 0f;  // Timer to track reload
 
     Rectangle hitbox = new Rectangle(x, y, 50, 50);
+    Random random = new Random();
 
     public void draw(OrthographicCamera camera, ShapeRenderer shapeRenderer){
         // обновление камеры
@@ -26,8 +30,8 @@ public class Player {
         shapeRenderer.rect(x, y, 50, 50);
     } // отрисковка
 
-    public void update(OrthographicCamera camera){
-        controls(camera);
+    public void update(OrthographicCamera camera, float deltaTime){
+        controls(camera, deltaTime);
         hitbox.x = x;
         hitbox.y = y;
     } // обновление всех вычислений
@@ -39,7 +43,7 @@ public class Player {
         return y;
     } // узнать y игрока
 
-    public void controls(OrthographicCamera camera) {
+    public void controls(OrthographicCamera camera, float deltaTime) {
         // Reset movement delta
         int deltaX = 0;
         int deltaY = 0;
@@ -62,9 +66,18 @@ public class Player {
         x += deltaX;
         y += deltaY;
 
-        // Check for left mouse button click
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            shot(camera);
+        // Update time since last shot
+        // Time in seconds for reloading (adjust as needed)
+        float reloadTime = random.nextFloat(1.5F, 2);
+        if (timeSinceLastShot < reloadTime) {
+            timeSinceLastShot += deltaTime;
+        }
+
+        // Check for left mouse button click and if weapon has reloaded
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timeSinceLastShot >= reloadTime) {
+            shot(camera);  // Fire the shot
+            timeSinceLastShot = 0;  // Reset the reload timer after shooting
+            System.out.println("*-> Fire! Reload time is: " + reloadTime);
         }
     } // контроль
 
